@@ -1,10 +1,12 @@
 import TicketForm from "@/components/TicketForm";
+import TicketGenerate from "@/components/TicketGenerate";
 import Image from "next/image";
 import { useState } from "react";
+import UserModel from "@/models/UserModel";
 
 export default function Home() {
   const [step, setStep] = useState(1);
-  const [state, setState] = useState({
+  const [state, setState] = useState<UserModel>({
     name: "",
     email: "",
     githubUser: "",
@@ -20,7 +22,7 @@ export default function Home() {
         backgroundImage: "url('/images/background-desktop.png')",
       }}
     >
-      <div className="absolute top-0 left-0 w-full h-full bg-background z-10 opacity-60 overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full bg-background z-10 opacity-50 overflow-hidden">
         <Image
           src="/images/pattern-lines.svg"
           width={10000}
@@ -65,7 +67,11 @@ export default function Home() {
         <Image src="/images/logo-full.svg" width={200} height={50} alt="Logo" />
       </div>
 
-      <TicketForm state={state} setState={setState} />
+      {step === 1 ? (
+        <TicketForm state={state} setState={setState} setStep={setStep} />
+      ) : (
+        <TicketGenerate state={state} />
+      )}
     </div>
   );
 }

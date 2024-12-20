@@ -2,33 +2,32 @@ import React from "react";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-
-interface State {
-  name: string;
-  email: string;
-  githubUser: string;
-  avatar: File | null;
-}
+import UserModel from "@/models/UserModel";
 
 interface Props {
-  state: State;
-  setState: (state: State | ((prevState: State) => State)) => void;
+  state: UserModel;
+  setState: (state: UserModel | ((prevState: UserModel) => UserModel)) => void;
+  setStep: (step: number) => void;
 }
 
 export default function TicketForm({
   state: { name, email, githubUser, avatar },
   setState,
+  setStep,
 }: Props) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      console.log(acceptedFiles[0]);
       if (acceptedFiles[0]) {
+        if (acceptedFiles[0].size > 500000) {
+          alert("File size exceeds 500KB");
+          return;
+        }
         setState(
-          (prevState: State) =>
+          (prevState: UserModel) =>
             ({
               ...prevState,
               avatar: acceptedFiles[0],
-            } as State)
+            } as UserModel)
         );
       }
     },
@@ -60,7 +59,6 @@ export default function TicketForm({
               {...getInputProps({
                 accept: "image/png, image/jpeg",
                 multiple: false,
-                maxSize: 500000,
               })}
             />
             <div className="flex p-2 bg-neutral-500/25 rounded-lg border-[1px] mb-4 border-neutral-500">
@@ -147,7 +145,13 @@ export default function TicketForm({
         </div>
 
         {/* Submit */}
-        <button className="bg-orange-500 text-white rounded-lg py-2 mt-2">
+        <button
+          className="bg-orange-500 text-white rounded-lg py-2 mt-2"
+          onClick={() => {
+            setStep(2);
+            console.log({ name, email, githubUser, avatar });
+          }}
+        >
           Generate My Ticket
         </button>
       </div>
