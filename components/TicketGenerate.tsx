@@ -11,9 +11,9 @@ export default function TicketGenerate({
   const randomId = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
 
   return (
-    <div className="flex flex-col max-w-[700px] h-full flex-grow items-center mt-8 z-20">
+    <div className="flex flex-col max-w-[700px] h-full flex-grow items-center mt-8 z-20 overflow-hidden">
       <div className="flex flex-col gap-4">
-        <h1 className="text-white text-[48px] font-[700] text-center leading-tight">
+        <h1 className="text-white text-[48px] font-[700] text-center leading-tight ">
           Congrats,{" "}
           <span className="bg-gradient-to-r from-orange-500 to-white bg-clip-text text-transparent">
             {name}
@@ -62,22 +62,28 @@ export default function TicketGenerate({
           {/* Avatar */}
           <div className="absolute flex bottom-0 left-0 p-4">
             <div className="flex items-center">
-              <Image
-                src={
-                  avatar
-                    ? URL.createObjectURL(avatar)
-                    : "/images/image-avatar.jpg"
-                }
-                alt="avatar"
-                width={64}
-                height={64}
-                className="rounded-lg"
-              />
+              <div className="flex w-16 h-16 rounded-lg overflow-hidden">
+                <Image
+                  src={
+                    avatar
+                      ? URL.createObjectURL(avatar)
+                      : "/images/image-avatar.jpg"
+                  }
+                  alt="avatar"
+                  width={64}
+                  height={64}
+                  className="flex object-cover w-full h-full"
+                />
+              </div>
+
               <div className="flex flex-col ml-4">
-                <p className="text-white text-[24px] font-[500] leading-none">
+                {/* Name */}
+                <p className="text-white text-[24px] font-[500] leading-none max-w-60 max-h-12 text-ellipsis overflow-hidden">
                   {name}
                 </p>
-                <div className="flex">
+
+                {/* Github */}
+                <div className="flex max-w-60">
                   <Image
                     src={"/images/icon-github.svg"}
                     alt="github"
@@ -85,7 +91,9 @@ export default function TicketGenerate({
                     height={16}
                     className="mr-1"
                   />
-                  <p className="text-neutral-300 text-[16px]">{githubUser}</p>
+                  <p className="text-neutral-300 text-[16px] max-w-56 text-ellipsis overflow-hidden">
+                    {githubUser}
+                  </p>
                 </div>
               </div>
             </div>
